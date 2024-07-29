@@ -2,7 +2,6 @@ package com.quartz.component;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import org.quartz.CronScheduleBuilder;
@@ -46,35 +45,40 @@ public class JobDeatilAndTrigger {
 	}
 
 	public Trigger getTrigger() {
-//		String cronExpression = "0/60 * * * * ?";
+		 String cronExpression = "0 0 0 * * ?";
+
+	        // Setting start time to the next occurrence of 12 AM
+	        ZonedDateTime startTime = ZonedDateTime.now()
+	            .withHour(0)
+	            .withMinute(0)
+	            .withSecond(0)
+	            .withNano(0)
+	            .plusDays(1);  // Ensures the start time is the next midnight
+	        Date startDate = Date.from(startTime.toInstant());
+
+	        Trigger trigger = TriggerBuilder.newTrigger()
+	            .forJob(jobDeatilAndTrigger.getJobDetail()) // Assuming jobDetailAndTrigger is already defined
+	            .withIdentity("printNameTrigger", "group1")
+	            .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
+	                .inTimeZone(TimeZone.getTimeZone("Asia/Kolkata"))
+	                .withMisfireHandlingInstructionFireAndProceed())
+	            .startAt(startDate)
+	            .build();
+
+
+//		String cronExpression = "0 0/1 * * * ?";
 //
-//		ZonedDateTime startTime = ZonedDateTime.now().withHour(00).withMinute(1).withSecond(1).withNano(00);
+//		// Set the start time to the next minute with seconds and nano seconds as 0
+//		ZonedDateTime startTime = ZonedDateTime.now().withSecond(0).withNano(0).plusMinutes(1);
 //		Date startDate = Date.from(startTime.toInstant());
 //
+//		// Build the trigger with the given cron expression and start time
 //		Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDeatilAndTrigger.getJobDetail())
 //				.withIdentity("printNameTrigger", "group1")
 //				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
 //						.inTimeZone(TimeZone.getTimeZone("Asia/Kolkata"))
 //						.withMisfireHandlingInstructionFireAndProceed())
 //				.startAt(startDate).build();
-
-//		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("* * * * * ?");
-//		Trigger trigger =TriggerBuilder.newTrigger().forJob(getJobDetail()).withIdentity("myTrigger")
-//				.withSchedule(scheduleBuilder).build();
-
-		String cronExpression = "0 0/1 * * * ?";
-
-		// Set the start time to the next minute with seconds and nano seconds as 0
-		ZonedDateTime startTime = ZonedDateTime.now().withSecond(0).withNano(0).plusMinutes(1);
-		Date startDate = Date.from(startTime.toInstant());
-
-		// Build the trigger with the given cron expression and start time
-		Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDeatilAndTrigger.getJobDetail())
-				.withIdentity("printNameTrigger", "group1")
-				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
-						.inTimeZone(TimeZone.getTimeZone("Asia/Kolkata"))
-						.withMisfireHandlingInstructionFireAndProceed())
-				.startAt(startDate).build();
 		return trigger;
 	}
 

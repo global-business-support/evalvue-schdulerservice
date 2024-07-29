@@ -17,12 +17,12 @@ public class UpdateDeatilOfPaymentWithInvoiceService {
 
 	public void updateDeatilWithInovice(Invoice invoice, Long userId, Long organizationId, PaymentRepo paymentRepo,
 			SubscriptionRepo subscriptionRepo, IsPaidUpdateRepo isPaidUpdateRepo) throws JSONException, ParseException {
-        
+
 		PaymentEntityDTO paymentEntityDTO = PaymentEntityDTO.getInstance();
 		PaymentDetailService paymentDetailService = new PaymentDetailService();
 		JSONObject invoiceJson = invoice.toJson();
-		
-       //Check the Payment status
+
+		// Check the Payment status
 		if (invoiceJson.getString("status").equals("paid")) {
 
 			// Set data in PayementDTO from Invoice
@@ -37,7 +37,7 @@ public class UpdateDeatilOfPaymentWithInvoiceService {
 				paymentDetailService.getPaymentDeatilStore(paymentEntityDTO.getRazorpayPaymentId(), paymentEntityDTO,
 						paymentRepo);
 				// Update ispaid
-				isPaidUpdateRepo.updateIsPaid(organizationId, userId, (byte) 1);
+				isPaidUpdateRepo.updateIsPaid(organizationId, userId, true);
 
 				System.out.println(paymentEntityDTO);
 			} catch (Exception e) {
@@ -49,7 +49,7 @@ public class UpdateDeatilOfPaymentWithInvoiceService {
 			subscriptionDetail.updateTheSubscriptionDeatil(userId, organizationId, SubscriptionId, subscriptionRepo);
 
 		} else {
-			isPaidUpdateRepo.updateIsPaid(organizationId, userId, (byte) 0);
+			isPaidUpdateRepo.updateIsPaid(organizationId, userId, false);
 		}
 	}
 }
