@@ -3,6 +3,7 @@ package com.quartz.service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.quartz.repo.IsPaidUpdateRepo;
@@ -16,7 +17,7 @@ public class CheckDateTimeOfSubscription {
 	public void checkTheExpireOfSubscription(String razorPaySubcriptionId, Timestamp subcriptionEndDate, Long userId,
 			Long organizationId, Timestamp subscriptionNextDueDate, PaymentRepo paymentRepo,
 			SubscriptionRepo subscriptionRepo, IsPaidUpdateRepo isPaidUpdateRepo) throws RazorpayException {
-		
+
 		// Create CurrentLocal Time For comparison And Object
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		SubscriptionIdService subscriptionIdService = new SubscriptionIdService();
@@ -28,25 +29,26 @@ public class CheckDateTimeOfSubscription {
 			LocalDateTime localTimeSubcriptionEndDate = subcriptionEndDate.toLocalDateTime();
 			LocalDateTime localSubscriptionNextDueDate = subscriptionNextDueDate.toLocalDateTime();
 
-			System.out.println(localTimeSubcriptionEndDate);
+		//	System.out.println(localTimeSubcriptionEndDate);
 			if (localTimeSubcriptionEndDate.isAfter(currentDateTime)) {
 
-				System.out.println(localSubscriptionNextDueDate);
+				//System.out.println(localSubscriptionNextDueDate);
 				if (currentDateTime.isAfter(localSubscriptionNextDueDate)) {
 
 					subscriptionIdService.getInvoicesBySubscriptionId(razorPaySubcriptionId, userId, organizationId,
 							paymentRepo, subscriptionRepo, isPaidUpdateRepo);
 				}
 
-			}  else {
-				
-				byte isPaid = 0;
-				isPaidUpdateRepo.updateIsPaid(userId, organizationId, isPaid);
+			} else {
+
+				boolean isPaid = false;
+				isPaidUpdateRepo.updateIsPaid(organizationId, userId, isPaid);
 			}
 		} else {
-			
-			byte isPaid = 0;
-			isPaidUpdateRepo.updateIsPaid(userId, organizationId, isPaid);
+//			System.out.println("UserID " + userId);
+//			System.out.println("OrgainaztionIs " + organizationId);
+			boolean isPaid = false;
+			isPaidUpdateRepo.updateIsPaid(organizationId, userId, isPaid);
 		}
 
 	}

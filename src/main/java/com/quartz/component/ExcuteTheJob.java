@@ -44,6 +44,7 @@ public class ExcuteTheJob extends QuartzJobBean {
 			String razorPaySubcriptionId = (String) obj[0];
 			Timestamp subscriptionEndDate = (Timestamp) obj[1];
 			Timestamp subscriptionNextDueDate = (Timestamp) obj[2];
+			System.out.println(subscriptionNextDueDate);
 			Long userId = (Long) obj[3];
 			Long organizationId = (Long) obj[4];
 
