@@ -21,7 +21,7 @@ public class UpdateDeatilOfPaymentWithInvoiceService {
 		PaymentEntityDTO paymentEntityDTO = PaymentEntityDTO.getInstance();
 		PaymentDetailService paymentDetailService = new PaymentDetailService();
 		JSONObject invoiceJson = invoice.toJson();
-
+         System.out.println(invoiceJson.getString("status"));
 		// Check the Payment status
 		if (invoiceJson.getString("status").equals("paid")) {
 
@@ -36,7 +36,7 @@ public class UpdateDeatilOfPaymentWithInvoiceService {
 				// set data in payemntDTO
 				paymentDetailService.getPaymentDeatilStore(paymentEntityDTO.getRazorpayPaymentId(), paymentEntityDTO,
 						paymentRepo);
-				// Update ispaid
+				// Update TURE ispaid
 				isPaidUpdateRepo.updateIsPaid(organizationId, userId, true);
 
 				System.out.println(paymentEntityDTO);

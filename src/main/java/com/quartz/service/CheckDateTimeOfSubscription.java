@@ -22,21 +22,21 @@ public class CheckDateTimeOfSubscription {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		SubscriptionIdService subscriptionIdService = new SubscriptionIdService();
 
-		if (subcriptionEndDate != null && subscriptionNextDueDate != null) {
+		if (subcriptionEndDate != null) {
 
 			// Convert Timestamp subcriptionEndDate , subscriptionNextDueDate to
 			// LocalDateTime
 			LocalDateTime localTimeSubcriptionEndDate = subcriptionEndDate.toLocalDateTime();
-			LocalDateTime localSubscriptionNextDueDate = subscriptionNextDueDate.toLocalDateTime();
 
-		//	System.out.println(localTimeSubcriptionEndDate);
 			if (localTimeSubcriptionEndDate.isAfter(currentDateTime)) {
+				if (subscriptionNextDueDate != null) {
+					LocalDateTime localSubscriptionNextDueDate = subscriptionNextDueDate.toLocalDateTime();
 
-				//System.out.println(localSubscriptionNextDueDate);
-				if (currentDateTime.isAfter(localSubscriptionNextDueDate)) {
+					if (currentDateTime.isAfter(localSubscriptionNextDueDate)) {
 
-					subscriptionIdService.getInvoicesBySubscriptionId(razorPaySubcriptionId, userId, organizationId,
-							paymentRepo, subscriptionRepo, isPaidUpdateRepo);
+						subscriptionIdService.getInvoicesBySubscriptionId(razorPaySubcriptionId, userId, organizationId,
+								paymentRepo, subscriptionRepo, isPaidUpdateRepo);
+					}
 				}
 
 			} else {
@@ -45,8 +45,7 @@ public class CheckDateTimeOfSubscription {
 				isPaidUpdateRepo.updateIsPaid(organizationId, userId, isPaid);
 			}
 		} else {
-//			System.out.println("UserID " + userId);
-//			System.out.println("OrgainaztionIs " + organizationId);
+
 			boolean isPaid = false;
 			isPaidUpdateRepo.updateIsPaid(organizationId, userId, isPaid);
 		}
