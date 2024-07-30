@@ -18,8 +18,8 @@ public class SubscriptionIdService implements RazorPaySubcriptionIdInterface {
 	@Autowired
 	SubscriptionRepo subscriptionRepo;
 
-	static String keyId = "rzp_test_mHIc2FsOxWbBD7";
-	static String keySecret = "f8cWeZ5ImalzggaExivDZPT7";
+	static String keyId = "rzp_live_0KlxeEsfpZArko";
+	static String keySecret = "OXiHoD02B9nJQynqRT5g80Za";
 
 	public static RazorpayClient razorpayClient() throws Exception {
 		return new RazorpayClient(keyId, keySecret);

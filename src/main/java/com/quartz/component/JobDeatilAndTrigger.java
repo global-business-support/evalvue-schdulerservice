@@ -21,6 +21,7 @@ import com.quartz.service.RazorPaySubcriptionIdInterface;
 
 @Component
 public class JobDeatilAndTrigger {
+
 	@Autowired
 	RazorPaySubcriptionIdInterface razorPaySubcriptionIdInterface;
 	@Autowired
@@ -45,26 +46,25 @@ public class JobDeatilAndTrigger {
 	}
 
 	public Trigger getTrigger() {
-		 String cronExpression = "0 0 0 * * ?";
+		String cronExpression = "0 0 0 * * ?";
 
-	        // Setting start time to the next occurrence of 12 AM
-	        ZonedDateTime startTime = ZonedDateTime.now()
-	            .withHour(0)
-	            .withMinute(0)
-	            .withSecond(0)
-	            .withNano(0)
-	            .plusDays(1);  // Ensures the start time is the next midnight
-	        Date startDate = Date.from(startTime.toInstant());
+		// Setting start time to the next occurrence of 12 AM
+		ZonedDateTime startTime = ZonedDateTime.now().
+				withHour(0).withMinute(0).
+				withSecond(0).withNano(0).
+				plusDays(1); 
 
-	        Trigger trigger = TriggerBuilder.newTrigger()
-	            .forJob(jobDeatilAndTrigger.getJobDetail()) // Assuming jobDetailAndTrigger is already defined
-	            .withIdentity("printNameTrigger", "group1")
-	            .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
-	                .inTimeZone(TimeZone.getTimeZone("Asia/Kolkata"))
-	                .withMisfireHandlingInstructionFireAndProceed())
-	            .startAt(startDate)
-	            .build();
+		Date startDate = Date.from(startTime.toInstant());
 
+		Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDeatilAndTrigger.getJobDetail()) // Assuming
+																									// jobDetailAndTrigger
+																									// is already
+																									// defined
+				.withIdentity("printNameTrigger", "group1")
+				.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)
+						.inTimeZone(TimeZone.getTimeZone("Asia/Kolkata"))
+						.withMisfireHandlingInstructionFireAndProceed())
+				.startAt(startDate).build();
 
 //		String cronExpression = "0 0/1 * * * ?";
 //

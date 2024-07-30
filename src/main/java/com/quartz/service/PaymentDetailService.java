@@ -10,8 +10,8 @@ import com.razorpay.RazorpayClient;
 
 @Service
 public class PaymentDetailService {
-	static String keyId = "rzp_test_mHIc2FsOxWbBD7";
-	static String keySecret = "f8cWeZ5ImalzggaExivDZPT7";
+	static String keyId = "rzp_live_0KlxeEsfpZArko";
+	static String keySecret = "OXiHoD02B9nJQynqRT5g80Za";
 	int paymentStatusId;
 
 	public static RazorpayClient razorpayClient() throws Exception {
